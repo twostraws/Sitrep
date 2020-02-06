@@ -1,0 +1,6 @@
+warning_threshold: 5
+large_tuple: 3
+disabled_rules: # rule identifiers to exclude from running
+  - line_length
+excluded: # paths to ignore during linting. overridden by `included`.
+  - .build

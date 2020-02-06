@@ -1,0 +1,3 @@
+
+@interface DoNotScanThis : NSObject {
+}
