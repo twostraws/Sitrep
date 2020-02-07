@@ -26,6 +26,15 @@ Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syn
 
 Sitrep is written using Swift 5.1. You can either build and run the executable directly, or integrate the SitrepCore library into your own code. 
 
+To build Sitrep, clone this repository and open Terminal in the repository root directory. Then run:
+
+```
+swift build
+swift run sitrep ~/path/to/your/project/root
+```
+
+If you would like to keep a copy of the `sitrep` executable around, find it in the `.debug` directory after running `swift build`.
+
 To run Sitrep from the command line just provide it with the name of a project directory to parse – it will locate all Swift files recursively from there. Alternatively, just using `sitrep` by itself will scan the current directory.
 
 
