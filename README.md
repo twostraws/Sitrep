@@ -22,9 +22,37 @@ Behind the scenes, Sitrep captures a lot more information that could be utilized
 Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax), which means it parses Swift code accurately and efficiently.
 
 
+## Installation
+
+Sitrep can be used through the Swift Package Manager. You can add it as a dependency in your `Package.swift` file:
+
+```swift
+let package = Package(
+    //...
+    dependencies: [
+        .package(url: "https://github.com/twostraws/Sitrep", .branch("master"))
+    ],
+    //...
+)
+```
+
+Then `import SitrepCore` wherever you’d like to use it.
+
+
+To install the Sitrep command line tool, clone the repository and run `make install`:
+
+```bash
+git clone https://github.com/twostraws/Sitrep
+cd Sitrep
+make install
+```
+
+From now on you can use the `sitrep` command to scan Swift projects.
+
+
 ## Try it yourself
 
-Sitrep is written using Swift 5.1. You can either build and run the executable directly, or integrate the SitrepCore library into your own code. 
+Sitrep is written using Swift 5.1. You can either build and run the executable directly, or integrate the SitrepCore library into your own code.
 
 To build Sitrep, clone this repository and open Terminal in the repository root directory. Then run:
 
@@ -59,6 +87,6 @@ Sitrep was designed and built by Paul Hudson, and is copyright © Paul Hudson 20
 
 Sitrep is built on top of Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax) library for parsing code, which is also available under the Apache License v2.0 with Runtime Library Exception.
 
-Swift, the Swift logo, and Xcode are trademarks of Apple Inc., registered in the U.S. and other countries. 
+Swift, the Swift logo, and Xcode are trademarks of Apple Inc., registered in the U.S. and other countries.
 
 If you find Sitrep useful, you might find my website full of Swift tutorials equally useful: [Hacking with Swift](https://www.hackingwithswift.com).
