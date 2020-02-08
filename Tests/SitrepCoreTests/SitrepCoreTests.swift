@@ -109,7 +109,7 @@ final class SitrepCoreTests: XCTestCase {
         let input = try getInput("nesting.swift")
         let file = try File(url: input)
 
-        XCTAssertEqual(file.results.body.lines.count, 54)
+        XCTAssertEqual(file.results.body.lines.count, 32)
         XCTAssertEqual(file.results.strippedBody.lines.count, 23)
     }
 
@@ -160,30 +160,35 @@ final class SitrepCoreTests: XCTestCase {
         XCTAssertEqual(results.imports.count(for: "SwiftUI"), 3)
     }
 
-    func testSpecificInheritances() throws {
-        let app = Scan(rootURL: inputs)
-        let (results, _, _) = app.run(creatingReport: false)
-
-        XCTAssertEqual(results.uiKitViewControllerCount, 2)
-        XCTAssertEqual(results.uiKitViewCount, 0)
-        XCTAssertEqual(results.swiftUIViewCount, 1)
-    }
-
     func testEncoding() throws {
         let input = try getInput("class.swift")
         let file = try File(url: input)
         let json = try file.debugPrint()
-        XCTAssertEqual(json.count, 2143)
+        XCTAssertEqual(json.count, 2113)
     }
 
-    func testReportGeneration() throws {
+    func testTextReportGeneration() throws {
         let app = Scan(rootURL: inputs)
         let detectedFiles = app.detectFiles()
         let (scannedFiles, failures) = app.parse(files: detectedFiles)
         let results = app.collate(scannedFiles)
-        let report = app.createReport(for: results, files: scannedFiles, failures: failures)
+        let report = app.createTextReport(for: results, files: scannedFiles, failures: failures)
 
         XCTAssertTrue(report.contains("SITREP"))
+    }
+
+    func testJSONReportGeneration() throws {
+        let app = Scan(rootURL: inputs)
+        let detectedFiles = app.detectFiles()
+        let (scannedFiles, failures) = app.parse(files: detectedFiles)
+        let results = app.collate(scannedFiles)
+        let report = app.createJSONReport(for: results, files: scannedFiles, failures: failures)
+
+        guard let data = report.data(using: .utf8) else {
+            XCTFail("Could not convert report string to data.")
+            return
+        }
+        _ = try JSONDecoder().decode(Report.self, from: data)
     }
 
     func testBodyStripperRemovedComments() throws {
@@ -215,9 +220,9 @@ final class SitrepCoreTests: XCTestCase {
         ("testFileCounts", testFileCounts),
         ("testCollationTypeCounts", testCollationTypeCounts),
         ("testCollationImports", testCollationImports),
-        ("testSpecificInheritances", testSpecificInheritances),
         ("testEncoding", testEncoding),
-        ("testReportGeneration", testReportGeneration),
+        ("testTextReportGeneration", testTextReportGeneration),
+        ("testJSONReportGeneration", testJSONReportGeneration),
         ("testBodyStripperRemovedComments", testBodyStripperRemovedComments),
         ("testCreatingReport", testCreatingReport)
     ]

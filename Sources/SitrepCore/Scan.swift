@@ -15,6 +15,14 @@ public struct Scan {
     /// The URL that was scanned in this run
     let rootURL: URL
 
+    /// Output type of the generated report
+    public enum ReportType {
+        /// simple text output
+        case text
+        /// formatted json output
+        case json
+    }
+
     /// Creates an app instance from a URL to a project directory
     public init(rootURL: URL) {
         self.rootURL = rootURL
@@ -22,16 +30,22 @@ public struct Scan {
 
     /// Performs the whole app run: scanning files, collating results, then optionally printing a report
     @discardableResult
-    public func run(creatingReport: Bool = true) -> (results: Results, files: [URL], failures: [URL]) {
+    public func run(creatingReport: Bool = true,
+                    reportType: ReportType = .text) -> (results: Results, files: [URL], failures: [URL]) {
         let detectedFiles = detectFiles()
         let (scannedFiles, failures) = parse(files: detectedFiles)
         let results = collate(scannedFiles)
 
         if creatingReport {
-            let report = createReport(for: results, files: scannedFiles, failures: failures)
-            print(report)
+            switch reportType {
+            case .text:
+                let report = createTextReport(for: results, files: scannedFiles, failures: failures)
+                print(report)
+            case .json:
+                let report = createJSONReport(for: results, files: scannedFiles, failures: failures)
+                print(report)
+            }
         }
-
         return (results, detectedFiles, failures)
     }
 
@@ -119,44 +133,100 @@ public struct Scan {
         return results
     }
 
+    /// Creates a report object from the scan results
+    func createReport(for results: Results, files: [File], failures: [URL]) -> Report {
+        let imports = results.imports
+            .allObjects
+            .sorted { first, second in results.imports.count(for: first) > results.imports.count(for: second) }
+            .compactMap { value -> Report.Stat? in
+                guard let name = value as? String else {
+                    return nil
+                }
+                return .init(name: name, value: results.imports.count(for: name))
+            }
+
+        let inheritances = results.classes
+            .map { $0.inheritance }
+            .flatMap { $0 }
+            .reduce(into: [:]) { $0[$1, default: 0] += 1 }
+            .sorted(by: { $0.1 > $1.1 })
+            .map { Report.Stat(name: $0.0, value: $0.1) }
+
+        var longestFileStat: Report.Stat?
+        if let longestFile = results.longestFile?.url?.lastPathComponent {
+            longestFileStat = .init(name: longestFile, value: results.longestFileLength)
+        }
+        var longestTypeStat: Report.Stat?
+        if let longestType = results.longestType?.name {
+            longestTypeStat = .init(name: longestType, value: results.longestTypeLength)
+        }
+
+        return .init(scanStats: .init(scannedFiles: files.count,
+                                      totalLinesOfCode: results.totalLinesOfCode,
+                                      totalStrippedLinesOfCode: results.totalStrippedLinesOfCode,
+                                      longestFile: longestFileStat,
+                                      longestType: longestTypeStat),
+                     objects: .init(structs: results.structs.count,
+                                    classes: results.classes.count,
+                                    enums: results.enums.count,
+                                    protocols: results.protocols.count,
+                                    extensions: results.extensions.count),
+                     imports: imports,
+                     inheritances: inheritances)
+    }
+
+    /// Prints out the report for a set of files in a pretty printed JSON format
+    func createJSONReport(for results: Results, files: [File], failures: [URL]) -> String {
+        let report = self.createReport(for: results, files: files, failures: failures)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        guard let data = try? encoder.encode(report), let string = String(data: data, encoding: .utf8) else {
+            return "[Error] Could not encode JSON data."
+        }
+        return string
+    }
+
     /// Prints out the report for a set of files
-    func createReport(for results: Results, files: [File], failures: [URL]) -> String {
+    func createTextReport(for results: Results, files: [File], failures: [URL]) -> String {
+        let report = self.createReport(for: results, files: files, failures: failures)
+
         var output = ["SITREP"]
 
         output.append("------")
         output.append("")
         output.append("Overview")
-        output.append("   Files scanned: \(files.count)")
-        output.append("   Structs: \(results.structs.count)")
-        output.append("   Classes: \(results.classes.count)")
-        output.append("   Enums: \(results.enums.count)")
-        output.append("   Protocols: \(results.protocols.count)")
-        output.append("   Extensions: \(results.extensions.count)")
+        output.append("   Files scanned: \(report.scanStats.scannedFiles)")
+        output.append("   Structs: \(report.objects.structs)")
+        output.append("   Classes: \(report.objects.classes)")
+        output.append("   Enums: \(report.objects.enums)")
+        output.append("   Protocols: \(report.objects.protocols)")
+        output.append("   Extensions: \(report.objects.extensions)")
 
         output.append("")
 
         output.append("Sizes")
-        output.append("   Total lines of code: \(results.totalLinesOfCode)")
-        output.append("   Source lines of code: \(results.totalStrippedLinesOfCode)")
+        output.append("   Total lines of code: \(report.scanStats.totalLinesOfCode)")
+        output.append("   Source lines of code: \(report.scanStats.totalStrippedLinesOfCode)")
 
-        if let longestFile = results.longestFile?.url?.lastPathComponent {
-            output.append("   Longest file: \(longestFile) (\(results.longestFileLength) source lines)")
+        if let longestFile = report.scanStats.longestFile {
+            output.append("   Longest file: \(longestFile.name) (\(longestFile.value) source lines)")
         }
 
-        if let longestType = results.longestType?.name {
-            output.append("   Longest type: \(longestType) (\(results.longestTypeLength) source lines)")
+        if let longestType = report.scanStats.longestType {
+            output.append("   Longest type: \(longestType.name) (\(longestType.value) source lines)")
         }
 
         output.append("")
         output.append("Structure")
-
-        let sortedImports = results.imports.allObjects.sorted { first, second in results.imports.count(for: first) > results.imports.count(for: second) }
-        let formattedImports = sortedImports.map { "\($0) (\(results.imports.count(for: $0)))" }
-        output.append("   Imports: \(formattedImports.joined(separator: ", "))")
-
-        output.append("   UIKit View Controllers: \(results.uiKitViewControllerCount)")
-        output.append("   UIKit Views: \(results.uiKitViewCount)")
-        output.append("   SwiftUI Views: \(results.swiftUIViewCount)")
+        output.append("")
+        output.append("   Imports:")
+        output.append("   ---")
+        output.append(report.imports.map { "   \($0.name): \($0.value)" }.joined(separator: "\n"))
+        output.append("")
+        output.append("   Inheritance:")
+        output.append("   ---")
+        output.append(report.inheritances.map { "   \($0.name): \($0.value)" }.joined(separator: "\n"))
+        output.append("")
 
         return output.joined(separator: "\n")
     }
