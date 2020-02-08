@@ -1,4 +1,4 @@
-name: Swift
+name: Unittests
 
 on: [push]
 
