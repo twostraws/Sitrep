@@ -4,6 +4,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/Swift-5.1-brightgreen.svg" />
+    <img src="https://github.com/twostraws/Sitrep/workflows/Unittests/badge.svg"/>
     <a href="https://twitter.com/twostraws">
         <img src="https://img.shields.io/badge/Contact-@twostraws-lightgrey.svg?style=flat" alt="Twitter: @twostraws" />
     </a>
