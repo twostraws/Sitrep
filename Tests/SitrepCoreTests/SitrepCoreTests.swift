@@ -159,6 +159,15 @@ final class SitrepCoreTests: XCTestCase {
         XCTAssertEqual(results.imports.count(for: "UIKit"), 2)
         XCTAssertEqual(results.imports.count(for: "SwiftUI"), 3)
     }
+    
+    func testSpecificInheritances() throws {
+        let app = Scan(rootURL: inputs)
+        let (results, _, _) = app.run(creatingReport: false)
+
+        XCTAssertEqual(results.uiKitViewControllerCount, 2)
+        XCTAssertEqual(results.uiKitViewCount, 0)
+        XCTAssertEqual(results.swiftUIViewCount, 1)
+    }
 
     func testEncoding() throws {
         let input = try getInput("class.swift")
@@ -220,6 +229,8 @@ final class SitrepCoreTests: XCTestCase {
         ("testFileCounts", testFileCounts),
         ("testCollationTypeCounts", testCollationTypeCounts),
         ("testCollationImports", testCollationImports),
+        ("testCollationImports", testCollationImports),
+        ("testSpecificInheritances", testSpecificInheritances),
         ("testEncoding", testEncoding),
         ("testTextReportGeneration", testTextReportGeneration),
         ("testJSONReportGeneration", testJSONReportGeneration),

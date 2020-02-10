@@ -65,4 +65,19 @@ public struct Results {
     var totalStrippedLinesOfCode: Int {
         totalStrippedCode.lines.count
     }
+    
+    /// How many classes inherit from UIView
+    var uiKitViewCount: Int {
+        return classes.sum { $0.inheritance.first == "UIView" }
+    }
+
+    /// How many classes inherit from UIViewController
+    var uiKitViewControllerCount: Int {
+        classes.sum { $0.inheritance.first == "UIViewController" }
+    }
+
+    /// How many structs conform to View
+    var swiftUIViewCount: Int {
+        structs.sum { $0.inheritance.contains("View") }
+    }
 }

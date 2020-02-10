@@ -145,12 +145,11 @@ public struct Scan {
                 return .init(name: name, value: results.imports.count(for: name))
             }
 
-        let inheritances = results.classes
-            .map { $0.inheritance }
-            .flatMap { $0 }
-            .reduce(into: [:]) { $0[$1, default: 0] += 1 }
-            .sorted(by: { $0.1 > $1.1 })
-            .map { Report.Stat(name: $0.0, value: $0.1) }
+        let inheritances = [
+            Report.Stat(name: "UIViewController", value: results.uiKitViewControllerCount),
+            Report.Stat(name: "UIView", value: results.uiKitViewCount),
+            Report.Stat(name: "SwiftUI.View", value: results.swiftUIViewCount),
+        ]
 
         var longestFileStat: Report.Stat?
         if let longestFile = results.longestFile?.url?.lastPathComponent {
@@ -216,16 +215,14 @@ public struct Scan {
             output.append("   Longest type: \(longestType.name) (\(longestType.value) source lines)")
         }
 
+        let imports = report.imports.map { "\($0.name) (\($0.value))" }.joined(separator: ", ")
+
         output.append("")
         output.append("Structure")
-        output.append("")
-        output.append("   Imports:")
-        output.append("   ---")
-        output.append(report.imports.map { "   \($0.name): \($0.value)" }.joined(separator: "\n"))
-        output.append("")
-        output.append("   Inheritance:")
-        output.append("   ---")
-        output.append(report.inheritances.map { "   \($0.name): \($0.value)" }.joined(separator: "\n"))
+        output.append("   Imports: \(imports)")
+        output.append("   UIKit View Controllers: \(results.uiKitViewControllerCount)")
+        output.append("   UIKit Views: \(results.uiKitViewCount)")
+        output.append("   SwiftUI Views: \(results.swiftUIViewCount)")
         output.append("")
 
         return output.joined(separator: "\n")
