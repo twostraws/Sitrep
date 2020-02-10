@@ -13,12 +13,17 @@ import SitrepCore
 
 let file: String
 
-if CommandLine.arguments.count == 1 {
+let flagPrefix = "--"
+let input = CommandLine.arguments.dropFirst()
+var arguments = input.filter { !$0.hasPrefix(flagPrefix) }
+var flags = input.filter { $0.hasPrefix(flagPrefix) }.map { $0.dropFirst(flagPrefix.count) }
+
+if arguments.isEmpty {
     file = FileManager.default.currentDirectoryPath
 } else {
-    file = CommandLine.arguments[1]
+    file = arguments[0]
 }
 
 let url = URL(fileURLWithPath: file)
 var app = Scan(rootURL: url)
-app.run()
+app.run(reportType: flags.contains("json") ? .json : .text)

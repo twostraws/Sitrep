@@ -50,6 +50,15 @@ make install
 
 From now on you can use the `sitrep` command to scan Swift projects.
 
+## Command line flags
+
+```bash
+sitrep --json
+sitrep ~/path/to/your/project/root --json
+```
+
+You can use the optional `--json` flag to print a pretty formatted JSON output.
+
 
 ## Try it yourself
 
@@ -57,7 +66,7 @@ Sitrep is written using Swift 5.1. You can either build and run the executable d
 
 To build Sitrep, clone this repository and open Terminal in the repository root directory. Then run:
 
-```
+```bash
 swift build
 swift run sitrep ~/path/to/your/project/root
 ```
@@ -75,7 +84,6 @@ Some suggestions you might want to explore:
 
 - Converting more of the tracked data (number of functions, parameters to functions, length of functions, etc) into reported data.
 - Adding a sitrep.yml file that lets users configure how files are scanned, such as the ability to ignore certain directories, what kind of output is printed, or to enable stripped parsing of individual types using `BodyStripper`.
-- Additional command-line options, such as whether to output JSON.
 - Reading more data from the parsed files, and using it to calculate things such as cyclomatic complexity.
 - Reading non-Swift data, such as number of storyboard scenes, number of outlets, number of assets in asset catalogs, etc.
 
