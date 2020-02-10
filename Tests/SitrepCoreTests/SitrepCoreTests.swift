@@ -109,7 +109,7 @@ final class SitrepCoreTests: XCTestCase {
         let input = try getInput("nesting.swift")
         let file = try File(url: input)
 
-        XCTAssertEqual(file.results.body.lines.count, 54)
+        XCTAssertEqual(file.results.body.lines.count, 32)
         XCTAssertEqual(file.results.strippedBody.lines.count, 23)
     }
 
@@ -173,7 +173,7 @@ final class SitrepCoreTests: XCTestCase {
         let input = try getInput("class.swift")
         let file = try File(url: input)
         let json = try file.debugPrint()
-        XCTAssertEqual(json.count, 2143)
+        XCTAssertEqual(json.count, 2113)
     }
 
     func testReportGeneration() throws {
