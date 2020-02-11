@@ -203,8 +203,11 @@ class FileVisitor: SyntaxVisitor {
         let inheritanceClause = node.inheritanceClause?.inheritedTypeCollection.map {
             "\($0.typeName)".trimmingCharacters(in: .whitespacesAndNewlines)
         } ?? []
+        
+        let name = node.name
+            .trimmingCharacters(in: .whitespaces)
 
-        let newObject = Type(type: type, name: node.name, inheritance: inheritanceClause, comments: comments(for: node), body: nodeBody, strippedBody: nodeBodyStripped)
+        let newObject = Type(type: type, name: name, inheritance: inheritanceClause, comments: comments(for: node), body: nodeBody, strippedBody: nodeBodyStripped)
 
         newObject.parent = current
         current?.types.append(newObject)

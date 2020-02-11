@@ -84,27 +84,21 @@ public struct Scan {
     func collate(_ scannedFiles: [File]) -> Results {
         var results = Results(files: scannedFiles)
 
+        var allTypesAndLenght = [String: Int]()
+        var allTypesByName = [String: Type]()
+        
         for file in scannedFiles {
             // order all our types by what they are
             for item in file.results.rootNode.types {
+                let name = item.name
+                let typeLength = item.strippedBody.lines.count
+                allTypesAndLenght[name, default: 0] += typeLength
+                allTypesByName[name] = item
+                
                 if item.type == .class {
                     results.classes.append(item)
-
-                    let typeLength = item.strippedBody.lines.count
-
-                    if typeLength > results.longestTypeLength {
-                        results.longestTypeLength = typeLength
-                        results.longestType = item
-                    }
                 } else if item.type == .struct {
                     results.structs.append(item)
-
-                    let typeLength = item.strippedBody.lines.count
-
-                    if typeLength > results.longestTypeLength {
-                        results.longestTypeLength = typeLength
-                        results.longestType = item
-                    }
                 } else if item.type == .enum {
                     results.enums.append(item)
                 } else if item.type == .protocol {
@@ -128,6 +122,12 @@ public struct Scan {
                 results.longestFile = file
                 results.longestFileLength = fileLength
             }
+        }
+        
+        // find the longest type and its length
+        if let longestMatch = allTypesAndLenght.max(by: { $0.value < $1.value }) {
+            results.longestTypeLength = longestMatch.value
+            results.longestType = allTypesByName[longestMatch.key]!
         }
 
         return results
