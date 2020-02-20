@@ -117,7 +117,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let files = app.detectFiles()
 
-        XCTAssertEqual(files.count, 8)
+        XCTAssertEqual(files.count, 9)
     }
 
     func testBadFileScanning() throws {
@@ -137,7 +137,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let (_, files, failures) = app.run(creatingReport: false)
 
-        XCTAssertEqual(files.count, 8)
+        XCTAssertEqual(files.count, 9)
         XCTAssertEqual(failures.count, 0)
     }
 
@@ -146,10 +146,10 @@ final class SitrepCoreTests: XCTestCase {
         let (results, _, _) = app.run(creatingReport: false)
 
         XCTAssertEqual(results.classes.count, 3)
-        XCTAssertEqual(results.structs.count, 2)
+        XCTAssertEqual(results.structs.count, 3)
         XCTAssertEqual(results.enums.count, 1)
         XCTAssertEqual(results.protocols.count, 4)
-        XCTAssertEqual(results.extensions.count, 1)
+        XCTAssertEqual(results.extensions.count, 2)
     }
 
     func testCollationImports() throws {
@@ -211,8 +211,18 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let (_, files, failures) = app.run(creatingReport: true)
 
-        XCTAssertEqual(files.count, 8)
+        XCTAssertEqual(files.count, 9)
         XCTAssertEqual(failures.count, 0)
+    }
+    
+    func testLongestType() throws {
+        let app = Scan(rootURL: inputs)
+        let (results, _, _) = app.run(creatingReport: false)
+        
+        // Code in extensions should count towards the length of the type they're extending.
+        // https://github.com/twostraws/Sitrep/issues/1
+        XCTAssertEqual(results.longestType?.name, "Foobar")
+        XCTAssertEqual(results.longestTypeLength, 45)
     }
 
     static var allTests = [
@@ -235,6 +245,7 @@ final class SitrepCoreTests: XCTestCase {
         ("testTextReportGeneration", testTextReportGeneration),
         ("testJSONReportGeneration", testJSONReportGeneration),
         ("testBodyStripperRemovedComments", testBodyStripperRemovedComments),
-        ("testCreatingReport", testCreatingReport)
+        ("testCreatingReport", testCreatingReport),
+        ("testLongestType", testLongestType)
     ]
 }
