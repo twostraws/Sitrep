@@ -12,11 +12,12 @@ let package = Package(
         .executable(name: "sitrep", targets: ["Sitrep"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", .exact("0.50100.0"))
+        .package(url: "https://github.com/apple/swift-syntax.git", .exact("0.50100.0")),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
     ],
     targets: [
         .target(name: "Sitrep", dependencies: ["SitrepCore"]),
-        .target(name: "SitrepCore", dependencies: ["SwiftSyntax"]),
+        .target(name: "SitrepCore", dependencies: ["SwiftSyntax", "Yams"]),
         .testTarget(name: "SitrepCoreTests", dependencies: ["SitrepCore"], exclude: ["Inputs"])
     ]
 )
