@@ -1,0 +1,6 @@
+excluded:
+  - .build
+  - .github
+  - .swiftpm
+  - Sitrep.xcodeproj
+  - Tests

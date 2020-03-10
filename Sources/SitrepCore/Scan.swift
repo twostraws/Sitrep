@@ -9,18 +9,30 @@
 //
 
 import Foundation
+import ArgumentParser
 
 /// The main app struct, which figures out what to scan, performs the scan, collates the result, and displays it
 public struct Scan {
     /// The URL that was scanned in this run
     let rootURL: URL
 
-    /// Output type of the generated report
-    public enum ReportType {
+    public enum ReportType: String, ExpressibleByArgument, CaseIterable {
         /// simple text output
         case text
         /// formatted json output
         case json
+    
+        public init?(argument: String) {
+            guard let format = Self(rawValue: argument) else {return nil}
+            self = format
+        }
+        
+        public static var args: String {
+            let args = Self.allCases.map {
+                $0.rawValue
+            }.joined(separator: "|")
+            return "[\(args)]"
+        }
     }
 
     /// Creates an app instance from a URL to a project directory
@@ -31,8 +43,10 @@ public struct Scan {
     /// Performs the whole app run: scanning files, collating results, then optionally printing a report
     @discardableResult
     public func run(creatingReport: Bool = true,
-                    reportType: ReportType = .text) -> (results: Results, files: [URL], failures: [URL]) {
-        let detectedFiles = detectFiles()
+                    reportType: ReportType = .text,
+                    path: String,
+                    configuration: Configuration = Configuration.default) -> (results: Results, files: [URL], failures: [URL]) {
+        let detectedFiles = detectFiles(excludedPath: configuration.excludedPath(path: path))
         let (scannedFiles, failures) = parse(files: detectedFiles)
         let results = collate(scannedFiles)
 
@@ -49,7 +63,7 @@ public struct Scan {
         return (results, detectedFiles, failures)
     }
 
-    func detectFiles() -> [URL] {
+    private func detectFiles(excludedPath: [String]) -> [URL] {
         let fileManager = FileManager.default
         let enumerator = fileManager.enumerator(at: rootURL, includingPropertiesForKeys: nil)
 
@@ -57,6 +71,10 @@ public struct Scan {
 
         while let objectURL = enumerator?.nextObject() as? URL {
             guard objectURL.hasDirectoryPath == false else { continue }
+            let isExcluded = excludedPath.reduce(false) { (result, next) -> Bool in
+                return result || objectURL.deletingLastPathComponent().relativePath.hasPrefix(next)
+            }
+            guard !isExcluded else { continue }
 
             if objectURL.pathExtension == "swift" {
                 detectedFiles.append(objectURL)
