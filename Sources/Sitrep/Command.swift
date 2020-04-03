@@ -31,6 +31,6 @@ struct Command: ParsableCommand {
         
         let url = URL(fileURLWithPath: path)
         let app = Scan(rootURL: url)
-        app.run(reportType: self.format, path: path, configuration: configuration)
+        app.run(reportType: self.format, configuration: configuration)
     }
 }

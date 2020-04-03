@@ -44,9 +44,8 @@ public struct Scan {
     @discardableResult
     public func run(creatingReport: Bool = true,
                     reportType: ReportType = .text,
-                    path: String,
                     configuration: Configuration = Configuration.default) -> (results: Results, files: [URL], failures: [URL]) {
-        let detectedFiles = detectFiles(excludedPath: configuration.excludedPath(path: path))
+        let detectedFiles = detectFiles(excludedPath: configuration.excludedPath(path: rootURL.path))
         let (scannedFiles, failures) = parse(files: detectedFiles)
         let results = collate(scannedFiles)
 
