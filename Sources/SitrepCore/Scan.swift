@@ -63,7 +63,7 @@ public struct Scan {
         return (results, detectedFiles, failures)
     }
 
-    private func detectFiles(excludedPath: [String]) -> [URL] {
+    func detectFiles(excludedPath: [String] = []) -> [URL] {
         let fileManager = FileManager.default
         let enumerator = fileManager.enumerator(at: rootURL, includingPropertiesForKeys: nil)
 
