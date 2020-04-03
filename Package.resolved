@@ -2,12 +2,30 @@
   "object": {
     "pins": [
       {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "35b76bf577d3cc74820f8991894ce3bcdf024ddc",
+          "version": "0.0.2"
+        }
+      },
+      {
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax.git",
         "state": {
           "branch": null,
           "revision": "3e3eb191fcdbecc6031522660c4ed6ce25282c25",
           "version": "0.50100.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
+          "version": "2.0.0"
         }
       }
     ]
