@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Xcode_11.4
+      run: sudo xcode-select --switch /Applications/Xcode_11.4.app/Contents/Developer
     - name: Build
       run: swift build -v
     - name: Run tests

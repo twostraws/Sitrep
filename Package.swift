@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -12,13 +12,18 @@ let package = Package(
         .executable(name: "sitrep", targets: ["Sitrep"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-syntax.git", .exact("0.50100.0")),
+        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .exact("0.50200.0")),
         .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
     ],
     targets: [
-        .target(name: "Sitrep", dependencies: ["SitrepCore", "ArgumentParser"]),
-        .target(name: "SitrepCore", dependencies: ["SwiftSyntax", "Yams", "ArgumentParser"]),
+        .target(name: "Sitrep", dependencies: ["SitrepCore",
+                                               .product(name: "ArgumentParser",
+                                                        package: "swift-argument-parser")]),
+        .target(name: "SitrepCore", dependencies: ["SwiftSyntax",
+                                                   "Yams",
+                                                   .product(name: "ArgumentParser",
+                                                            package: "swift-argument-parser")]),
         .testTarget(name: "SitrepCoreTests", dependencies: ["SitrepCore"], exclude: ["Inputs"])
     ]
 )

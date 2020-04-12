@@ -17,7 +17,7 @@ class BodyStripper: SyntaxRewriter {
     override func visit(_ token: TokenSyntax) -> Syntax {
         let leading = clean(trivia: token.leadingTrivia)
         let trailing = clean(trivia: token.trailingTrivia)
-        return token.withLeadingTrivia(leading).withTrailingTrivia(trailing)
+        return Syntax(token.withLeadingTrivia(leading).withTrailingTrivia(trailing))
     }
 
     /// This removes all comments plus tab and spaces, and also collapses line breaks
