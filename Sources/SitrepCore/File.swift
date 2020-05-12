@@ -23,9 +23,8 @@ struct File {
     init(url: URL) throws {
         self.url = url
         results = FileVisitor()
-
+        
         let sourceFile = try SyntaxParser.parse(url)
-        results = FileVisitor()
         results.walk(sourceFile)
     }
 
