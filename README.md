@@ -53,13 +53,13 @@ From now on you can use the `sitrep` command to scan Swift projects.
 Alternatively, you can install the tool by using [Mint](https://github.com/yonaskolb/Mint) as follows:
 
 ```bash
-$ mint install twostraws/Sitrep
+$ mint install twostraws/Sitrep@main
 ```
     
 And then run it using:
 
 ```bash
-$ mint run sitrep
+$ mint run sitrep@main
 ```
 
 ## Command line flags
