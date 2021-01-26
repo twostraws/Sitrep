@@ -9,7 +9,7 @@ public struct Configuration: Codable {
         excluded: []
     )
 
-    private init(excluded: [String]) {
+    public init(excluded: [String]) {
         self.excluded = excluded
     }
 

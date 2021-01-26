@@ -71,11 +71,11 @@ public struct Scan {
         while let objectURL = enumerator?.nextObject() as? URL {
             guard objectURL.hasDirectoryPath == false else { continue }
 
-            let isExcluded = excludedPath.reduce(false) { (result, next) -> Bool in
-                return result || objectURL.deletingLastPathComponent().relativePath.hasPrefix(next)
+            let isExcluded = excludedPath.contains { path in
+                objectURL.deletingLastPathComponent().relativePath.hasPrefix(path)
             }
 
-            guard !isExcluded else { continue }
+            guard isExcluded == false else { continue }
 
             if objectURL.pathExtension == "swift" {
                 detectedFiles.append(objectURL)

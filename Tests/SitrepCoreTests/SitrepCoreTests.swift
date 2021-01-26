@@ -117,7 +117,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let files = app.detectFiles()
 
-        XCTAssertEqual(files.count, 9)
+        XCTAssertEqual(files.count, 10)
     }
 
     func testBadFileScanning() throws {
@@ -137,7 +137,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let (_, files, failures) = app.run(creatingReport: false)
 
-        XCTAssertEqual(files.count, 9)
+        XCTAssertEqual(files.count, 10)
         XCTAssertEqual(failures.count, 0)
     }
 
@@ -145,7 +145,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let (results, _, _) = app.run(creatingReport: false)
 
-        XCTAssertEqual(results.classes.count, 3)
+        XCTAssertEqual(results.classes.count, 4)
         XCTAssertEqual(results.structs.count, 3)
         XCTAssertEqual(results.enums.count, 1)
         XCTAssertEqual(results.protocols.count, 4)
@@ -211,7 +211,7 @@ final class SitrepCoreTests: XCTestCase {
         let app = Scan(rootURL: inputs)
         let (_, files, failures) = app.run(creatingReport: true)
 
-        XCTAssertEqual(files.count, 9)
+        XCTAssertEqual(files.count, 10)
         XCTAssertEqual(failures.count, 0)
     }
 
@@ -223,6 +223,14 @@ final class SitrepCoreTests: XCTestCase {
         // https://github.com/twostraws/Sitrep/issues/1
         XCTAssertEqual(results.longestType?.name, "Foobar")
         XCTAssertEqual(results.longestTypeLength, 45)
+    }
+
+    func testIgnoredFiles() {
+        let app = Scan(rootURL: inputs)
+        let config = Configuration(excluded: ["IgnoredDirectory"])
+        let (_, files, _) = app.run(reportType: .json, configuration: config)
+
+        XCTAssertEqual(files.count, 9, "There should be 9 files in all test inputs, because IgnoredDirectory should be excluded.")
     }
 
     static var allTests = [
