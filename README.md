@@ -20,7 +20,7 @@ Sitrep is source code analyzer for Swift projects, giving you a high-level overv
 
 Behind the scenes, Sitrep captures a lot more information that could be utilized – how many functions you have, how many comments (regular and documentation), how large your enums are, and more. These aren’t currently reported, but could be in a future release. It’s also written as both a library and an executable, so it can be integrated elsewhere as needed.
 
-Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax), which means it parses Swift code accurately and efficiently.
+Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax), which means it parses Swift code accurately and efficiently. Make sure that SwiftSyntax version specified in Package.swift matches your current Swift tools version (i.e. if you're using Swift tools 5.3 you need to update spec from `0.50200.0` to `0.50300.0`).
 
 
 ## Installation
