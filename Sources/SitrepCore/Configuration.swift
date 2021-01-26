@@ -20,8 +20,8 @@ public struct Configuration: Codable {
     }
 
     func excludedPath(path: String) -> [String] {
-        return self.excluded.map {
-            return "\(path)/\($0)"
+        excluded.map {
+            "\(path)/\($0)"
         }
     }
 }

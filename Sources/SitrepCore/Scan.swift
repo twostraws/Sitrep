@@ -23,7 +23,7 @@ public struct Scan {
         case json
 
         public init?(argument: String) {
-            guard let format = Self(rawValue: argument) else {return nil}
+            guard let format = Self(rawValue: argument) else { return nil }
             self = format
         }
 
@@ -31,6 +31,7 @@ public struct Scan {
             let args = Self.allCases.map {
                 $0.rawValue
             }.joined(separator: "|")
+
             return "[\(args)]"
         }
     }
@@ -59,6 +60,7 @@ public struct Scan {
                 print(report)
             }
         }
+
         return (results, detectedFiles, failures)
     }
 
@@ -162,6 +164,7 @@ public struct Scan {
                 guard let name = value as? String else {
                     return nil
                 }
+                
                 return .init(name: name, value: results.imports.count(for: name))
             }
 

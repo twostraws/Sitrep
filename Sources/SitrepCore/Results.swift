@@ -68,7 +68,7 @@ public struct Results {
 
     /// How many classes inherit from UIView
     var uiKitViewCount: Int {
-        return classes.sum { $0.inheritance.first == "UIView" }
+        classes.sum { $0.inheritance.first == "UIView" }
     }
 
     /// How many classes inherit from UIViewController
