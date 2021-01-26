@@ -14,7 +14,7 @@ let package = Package(
     dependencies: [
         .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .exact("0.50300.0")),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.2"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.2")
     ],
     targets: [
         .target(name: "Sitrep", dependencies: ["SitrepCore",

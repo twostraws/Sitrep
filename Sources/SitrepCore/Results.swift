@@ -65,7 +65,7 @@ public struct Results {
     var totalStrippedLinesOfCode: Int {
         totalStrippedCode.lines.count
     }
-    
+
     /// How many classes inherit from UIView
     var uiKitViewCount: Int {
         return classes.sum { $0.inheritance.first == "UIView" }

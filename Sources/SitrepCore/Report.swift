@@ -29,9 +29,9 @@ struct Report: Codable {
         var totalLinesOfCode: Int
         /// Total stripped lines of code
         var totalStrippedLinesOfCode: Int
-        /// Longest file name and lenght
+        /// Longest file name and length
         var longestFile: Stat?
-        /// Longest type name and lenght 
+        /// Longest type name and length 
         var longestType: Stat?
     }
 

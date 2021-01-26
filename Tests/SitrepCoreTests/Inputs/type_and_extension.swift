@@ -4,43 +4,43 @@ struct Foobar {
 
 extension Foobar {
     func foo() -> Int {
-        var i: Int = 0
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        i += 1
-        return i
+        var counter: Int = 0
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        counter += 1
+        return counter
     }
 }

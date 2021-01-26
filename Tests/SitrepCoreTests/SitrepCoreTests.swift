@@ -159,7 +159,7 @@ final class SitrepCoreTests: XCTestCase {
         XCTAssertEqual(results.imports.count(for: "UIKit"), 2)
         XCTAssertEqual(results.imports.count(for: "SwiftUI"), 3)
     }
-    
+
     func testSpecificInheritances() throws {
         let app = Scan(rootURL: inputs)
         let (results, _, _) = app.run(creatingReport: false)
@@ -214,11 +214,11 @@ final class SitrepCoreTests: XCTestCase {
         XCTAssertEqual(files.count, 9)
         XCTAssertEqual(failures.count, 0)
     }
-    
+
     func testLongestType() throws {
         let app = Scan(rootURL: inputs)
         let (results, _, _) = app.run(creatingReport: false)
-        
+
         // Code in extensions should count towards the length of the type they're extending.
         // https://github.com/twostraws/Sitrep/issues/1
         XCTAssertEqual(results.longestType?.name, "Foobar")

@@ -21,12 +21,12 @@ public struct Scan {
         case text
         /// formatted json output
         case json
-    
+
         public init?(argument: String) {
             guard let format = Self(rawValue: argument) else {return nil}
             self = format
         }
-        
+
         public static var args: String {
             let args = Self.allCases.map {
                 $0.rawValue
@@ -70,9 +70,11 @@ public struct Scan {
 
         while let objectURL = enumerator?.nextObject() as? URL {
             guard objectURL.hasDirectoryPath == false else { continue }
+
             let isExcluded = excludedPath.reduce(false) { (result, next) -> Bool in
                 return result || objectURL.deletingLastPathComponent().relativePath.hasPrefix(next)
             }
+
             guard !isExcluded else { continue }
 
             if objectURL.pathExtension == "swift" {
@@ -101,17 +103,18 @@ public struct Scan {
     func collate(_ scannedFiles: [File]) -> Results {
         var results = Results(files: scannedFiles)
 
-        var allTypesAndLenght = [String: Int]()
+        var allTypesAndLength = [String: Int]()
         var allTypesByName = [String: Type]()
-        
+
         for file in scannedFiles {
             // order all our types by what they are
             for item in file.results.rootNode.types {
                 let name = item.name
                 let typeLength = item.strippedBody.lines.count
-                allTypesAndLenght[name, default: 0] += typeLength
+
+                allTypesAndLength[name, default: 0] += typeLength
                 allTypesByName[name] = item
-                
+
                 if item.type == .class {
                     results.classes.append(item)
                 } else if item.type == .struct {
@@ -140,9 +143,9 @@ public struct Scan {
                 results.longestFileLength = fileLength
             }
         }
-        
+
         // find the longest type and its length
-        if let longestMatch = allTypesAndLenght.max(by: { $0.value < $1.value }) {
+        if let longestMatch = allTypesAndLength.max(by: { $0.value < $1.value }) {
             results.longestTypeLength = longestMatch.value
             results.longestType = allTypesByName[longestMatch.key]!
         }
@@ -165,14 +168,17 @@ public struct Scan {
         let inheritances = [
             Report.Stat(name: "UIViewController", value: results.uiKitViewControllerCount),
             Report.Stat(name: "UIView", value: results.uiKitViewCount),
-            Report.Stat(name: "SwiftUI.View", value: results.swiftUIViewCount),
+            Report.Stat(name: "SwiftUI.View", value: results.swiftUIViewCount)
         ]
 
         var longestFileStat: Report.Stat?
+
         if let longestFile = results.longestFile?.url?.lastPathComponent {
             longestFileStat = .init(name: longestFile, value: results.longestFileLength)
         }
+
         var longestTypeStat: Report.Stat?
+
         if let longestType = results.longestType?.name {
             longestTypeStat = .init(name: longestType, value: results.longestTypeLength)
         }
@@ -194,11 +200,14 @@ public struct Scan {
     /// Prints out the report for a set of files in a pretty printed JSON format
     func createJSONReport(for results: Results, files: [File], failures: [URL]) -> String {
         let report = self.createReport(for: results, files: files, failures: failures)
+
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
+
         guard let data = try? encoder.encode(report), let string = String(data: data, encoding: .utf8) else {
             return "[Error] Could not encode JSON data."
         }
+
         return string
     }
 
@@ -207,7 +216,6 @@ public struct Scan {
         let report = self.createReport(for: results, files: files, failures: failures)
 
         var output = ["SITREP"]
-
         output.append("------")
         output.append("")
         output.append("Overview")

@@ -203,7 +203,7 @@ class FileVisitor: SyntaxVisitor {
         let inheritanceClause = node.inheritanceClause?.inheritedTypeCollection.map {
             "\($0.typeName)".trimmingCharacters(in: .whitespacesAndNewlines)
         } ?? []
-        
+
         let name = node.name
             .trimmingCharacters(in: .whitespaces)
 
