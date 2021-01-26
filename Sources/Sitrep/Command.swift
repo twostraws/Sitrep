@@ -10,14 +10,14 @@ import Foundation
 import SitrepCore
 
 struct Command: ParsableCommand {
-    @Option(name: .shortAndLong, default: .json, help: "The report format \(Scan.ReportType.args).")
-    var format: Scan.ReportType
+    @Option(name: .shortAndLong, help: "The report format \(Scan.ReportType.args).")
+    var format: Scan.ReportType = .json
     
     @Option(name: [.short, .customLong("config")], help: "The path of `.sitrep.yml`.")
     var configurationPath: String?
     
-    @Option(name: .shortAndLong, default: FileManager.default.currentDirectoryPath, help: "The path of your project.")
-    var path: String
+    @Option(name: .shortAndLong, help: "The path of your project.")
+    var path = FileManager.default.currentDirectoryPath
     
     func run() throws {
         let configurationPath = self.configurationPath ?? self.path + "/.sitrep.yml"

@@ -6,15 +6,15 @@ import PackageDescription
 let package = Package(
     name: "Sitrep",
     platforms: [
-        .macOS(.v10_11)
+        .macOS(.v10_12)
     ],
     products: [
         .executable(name: "sitrep", targets: ["Sitrep"])
     ],
     dependencies: [
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .exact("0.50200.0")),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
+        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .exact("0.50300.0")),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.3.2"),
     ],
     targets: [
         .target(name: "Sitrep", dependencies: ["SitrepCore",
