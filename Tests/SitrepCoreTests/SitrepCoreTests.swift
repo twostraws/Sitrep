@@ -254,6 +254,7 @@ final class SitrepCoreTests: XCTestCase {
         ("testJSONReportGeneration", testJSONReportGeneration),
         ("testBodyStripperRemovedComments", testBodyStripperRemovedComments),
         ("testCreatingReport", testCreatingReport),
-        ("testLongestType", testLongestType)
+        ("testLongestType", testLongestType),
+        ("testIgnoredFiles", testIgnoredFiles)
     ]
 }
