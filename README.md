@@ -82,7 +82,7 @@ To build Sitrep, clone this repository and open Terminal in the repository root 
 
 ```bash
 swift build
-swift run sitrep ~/path/to/your/project/root
+swift run sitrep -p ~/path/to/your/project/root
 ```
 
 If you would like to keep a copy of the `sitrep` executable around, find it in the `.debug` directory after running `swift build`.
