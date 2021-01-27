@@ -66,12 +66,28 @@ $ mint run sitrep@main
 
 When run without any command line flags, Sitrep will automatically scan your current directory and print its findings as text. To control this behavior, Sitrep supports several command line flags:
 
-- `-c` lets you specify a path to your .sitrep.yml configuration file, if you have one.
+- `-c` lets you specify a path to your **.sitrep.yml** configuration file, if you have one.
 - `-f` sets the output format. For example, `-f json` enables JSON output. The default behavior is text output, which is equivalent to `-f text`.
 - `-i` will print debug information, showing the settings Sitrep would use if a real scan were requested, then exits.
 - `-p` sets the path Sitrep should scan. This defaults to your current working directory. 
 - `-h` prints command line help.
 
+
+## Configuration
+
+You can customize the behavior of Sitrep by creating a **.sitrep.yml** file in the directory you wish to scan. This is a [YAML](https://en.wikipedia.org/wiki/YAML) file that allows you to provide permanent options for scanning this path, although right now this is limited to one thing: an array of directory names to exclude from the scan.
+
+For example, if you wanted to exclude the **.build** directory and your tests, you might create a **.sitrep.yml** file such as this one:
+
+```yaml
+excluded:
+  - .build
+  - Tests
+```
+
+You can ask Sitrep to use a custom configuration file using the `-c` parameter, for example `sitrep -c /path/to/.sitrep.yml -p /path/to/swift/project`.
+
+Alternatively, you can use the `-i` parameter to have Sitrep tell you the configuration options it would use in a real analysis run. This will print the configuration information then exit.
 
 
 ## Try it yourself
