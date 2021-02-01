@@ -25,7 +25,39 @@ Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syn
 
 ## Installation
 
-Sitrep can be used through the Swift Package Manager. You can add it as a dependency in your `Package.swift` file:
+If you want to install the Sitrep command line tool, you have three options: [Homebrew](https://brew.sh), [Mint](https://github.com/yonaskolb/Mint), or building it from the command line yourself.
+
+Use this command for Homebrew:
+
+```bash
+brew install twostraws/brew/sitrep
+```
+
+Using Homebrew allows you to run `sitrep` directly from the command line.
+
+For Mint, install and run Sitrep with these command:
+
+```bash
+mint install twostraws/Sitrep@main
+mint run sitrep@main
+```
+
+And finally, to build and install the command line tool yourself, clone the repository and run `make install`:
+
+```bash
+git clone https://github.com/twostraws/Sitrep
+cd Sitrep
+make install
+```
+
+As with the Homebrew option, building the command line tool yourself allows you to use the `sitrep` command directly from the command line.
+
+
+## Using Sitrep as a library
+
+Sitrep is implemented as a library that does all the hard work of scanning and reporting, plus a small front end that handles reading and writing on the command line. As an alternative to using Sitrep from the command line, you can also use its library SitrepCore from inside your own Swift code.
+
+First, add Sitrep as a dependency in your `Package.swift` file:
 
 ```swift
 let package = Package(
@@ -40,31 +72,10 @@ let package = Package(
 Then `import SitrepCore` wherever you’d like to use it.
 
 
-To install the Sitrep command line tool, clone the repository and run `make install`:
-
-```bash
-git clone https://github.com/twostraws/Sitrep
-cd Sitrep
-make install
-```
-
-From now on you can use the `sitrep` command to scan Swift projects.
-
-Alternatively, you can install the tool by using [Mint](https://github.com/yonaskolb/Mint) as follows:
-
-```bash
-$ mint install twostraws/Sitrep@main
-```
-    
-And then run it using:
-
-```bash
-$ mint run sitrep@main
-```
 
 ## Command line flags
 
-When run without any command line flags, Sitrep will automatically scan your current directory and print its findings as text. To control this behavior, Sitrep supports several command line flags:
+When run on the command line without any flags, Sitrep will automatically scan your current directory and print its findings as text. To control this behavior, Sitrep supports several command line flags:
 
 - `-c` lets you specify a path to your **.sitrep.yml** configuration file, if you have one.
 - `-f` sets the output format. For example, `-f json` enables JSON output. The default behavior is text output, which is equivalent to `-f text`.
