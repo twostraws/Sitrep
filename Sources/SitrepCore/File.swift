@@ -12,7 +12,7 @@ import Foundation
 import SwiftSyntax
 
 /// Represents one file in the source code input
-struct File {
+public struct File {
     /// The file URL this is scanning
     let url: URL?
 
@@ -38,7 +38,7 @@ struct File {
     }
 
     /// Writes this file's tree to a JSON string for testing
-    func debugPrint() throws -> String {
+    public func debugPrint() throws -> String {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         let encoded = try encoder.encode(results.rootNode)

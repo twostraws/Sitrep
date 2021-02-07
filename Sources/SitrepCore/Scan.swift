@@ -64,7 +64,7 @@ public struct Scan {
         return (results, detectedFiles, failures)
     }
 
-    func detectFiles(excludedPath: [String] = []) -> [URL] {
+    public func detectFiles(excludedPath: [String] = []) -> [URL] {
         let fileManager = FileManager.default
         let enumerator = fileManager.enumerator(at: rootURL, includingPropertiesForKeys: nil)
 
@@ -87,7 +87,7 @@ public struct Scan {
         return detectedFiles
     }
 
-    func parse(files: [URL]) -> (successful: [File], failures: [URL]) {
+    public func parse(files: [URL]) -> (successful: [File], failures: [URL]) {
         var scannedFiles = [File]()
         var failures = [URL]()
 
@@ -102,7 +102,7 @@ public struct Scan {
         return (scannedFiles, failures)
     }
 
-    func collate(_ scannedFiles: [File]) -> Results {
+    public func collate(_ scannedFiles: [File]) -> Results {
         var results = Results(files: scannedFiles)
 
         var allTypesAndLength = [String: Int]()
@@ -156,7 +156,7 @@ public struct Scan {
     }
 
     /// Creates a report object from the scan results
-    func createReport(for results: Results, files: [File], failures: [URL]) -> Report {
+    public func createReport(for results: Results, files: [File], failures: [URL]) -> Report {
         let imports = results.imports
             .allObjects
             .sorted { first, second in results.imports.count(for: first) > results.imports.count(for: second) }
