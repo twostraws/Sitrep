@@ -11,50 +11,50 @@
 import Foundation
 
 /// The root class for the JSON report
-struct Report: Codable {
+public struct Report: Codable {
 
     /// A named statistical value
-    struct Stat: Codable {
+    public struct Stat: Codable {
         /// Name of the statistic
-        var name: String
+        public var name: String
         /// Value of the statistic
-        var value: Int
+        public var value: Int
     }
 
     /// Scan related statistics
-    struct Scan: Codable {
+    public struct Scan: Codable {
         /// Number of scanned files
-        var scannedFiles: Int
+        public var scannedFiles: Int
         /// Total lines of code
-        var totalLinesOfCode: Int
+        public var totalLinesOfCode: Int
         /// Total stripped lines of code
-        var totalStrippedLinesOfCode: Int
+        public var totalStrippedLinesOfCode: Int
         /// Longest file name and length
-        var longestFile: Stat?
+        public var longestFile: Stat?
         /// Longest type name and length 
-        var longestType: Stat?
+        public var longestType: Stat?
     }
 
     /// Object related statistics
-    struct Object: Codable {
+    public struct Object: Codable {
         /// Number of structs
-        var structs: Int
+        public var structs: Int
         /// Number of classes
-        var classes: Int
+        public var classes: Int
         /// Number of enums
-        var enums: Int
+        public var enums: Int
         /// Number of protocols
-        var protocols: Int
+        public var protocols: Int
         /// Number of extensions
-        var extensions: Int
+        public var extensions: Int
     }
 
     /// Scan statistics
-    var scanStats: Scan
+    public var scanStats: Scan
     /// Object statistics
-    var objects: Object
+    public var objects: Object
     /// Import statistics
-    var imports: [Stat]
+    public var imports: [Stat]
     /// Inheritance statistics
-    var inheritances: [Stat]
+    public var inheritances: [Stat]
 }
