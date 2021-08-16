@@ -3,10 +3,9 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Swift-5.4-blueviolet.svg" />
-    <img src="https://github.com/twostraws/Sitrep/workflows/Unittests/badge.svg"/>
+    <img src="https://img.shields.io/badge/Swift-5.4-red.svg" />
     <a href="https://twitter.com/twostraws">
-        <img src="https://img.shields.io/badge/Contact-@twostraws-lightgrey.svg?style=flat" alt="Twitter: @twostraws" />
+        <img src="https://img.shields.io/badge/Contact-@twostraws-blueviolet.svg?style=flat" alt="Twitter: @twostraws" />
     </a>
 </p>
 
