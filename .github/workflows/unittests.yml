@@ -5,12 +5,12 @@ on: [push]
 jobs:
   build:
 
-    runs-on: macOS-latest
+    runs-on: macos-11
 
     steps:
     - uses: actions/checkout@v2
     - name: Xcode_12.5
-      run: sudo xcode-select --switch /Applications/Xcode_12.5.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_12.5.app
     - name: Build
       run: swift build -v
     - name: Run tests
