@@ -24,8 +24,20 @@ public struct File {
         self.url = url
         results = FileVisitor()
 
-        let sourceFile = try SyntaxParser.parse(url)
-        results.walk(sourceFile)
+        do {
+            let sourceFile = try SyntaxParser.parse(url)
+            results.walk(sourceFile)
+        } catch ParserError.parserCompatibilityCheckFailed {
+            fatalError("""
+            Swift has reported a version incompatibility that's causing problems.
+            This usually means Sitrep was built using a different version of Swift
+            than the one currently enabled on your system. I wish this was handled
+            more gracefully, but I'm afraid SwiftSyntax – the Apple library used by
+            Sitrep – is rather flaky in this way.
+
+            For reference, Sitrep is currently designed to work with Swift 5.4.
+            """)
+        }
     }
 
     /// Creates an instance of the scanner from a string, then starts it walking through code
