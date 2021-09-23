@@ -35,7 +35,7 @@ public struct File {
             more gracefully, but I'm afraid SwiftSyntax – the Apple library used by
             Sitrep – is rather flaky in this way.
 
-            For reference, Sitrep is currently designed to work with Swift 5.4.
+            For reference, Sitrep is currently designed to work with Swift 5.4 and 5.5.
             """)
         }
     }
