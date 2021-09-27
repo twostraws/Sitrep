@@ -3,6 +3,14 @@
 
 import PackageDescription
 
+// IMPORTANT: IF YOU CHANGE THE BELOW, PLEASE ALSO CHANGE THE LARGE FATALERROR()
+// MESSAGE IN FILE.SWIFT TO MATCH THE NEW SWIFT VERSION.
+#if swift(<5.5)
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50400.0")
+#elseif swift(>=5.5)
+let swiftSyntaxVersion = Package.Dependency.Requirement.exactItem("0.50500.0")
+#endif
+
 let package = Package(
     name: "Sitrep",
     platforms: [
@@ -12,9 +20,7 @@ let package = Package(
         .library(name: "SitrepCore", targets: ["SitrepCore"])
     ],
     dependencies: [
-        // IMPORTANT: IF YOU CHANGE THE BELOW, PLEASE ALSO CHANGE THE LARGE FATALERROR()
-        // MESSAGE IN FILE.SWIFT TO MATCH THE NEW SWIFT VERSION.
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .exact("0.50400.0")),
+        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", swiftSyntaxVersion),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.4")
     ],
