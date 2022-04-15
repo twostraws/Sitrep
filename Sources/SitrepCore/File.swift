@@ -9,7 +9,12 @@
 //
 
 import Foundation
+#if canImport(SwiftSyntax)
 import SwiftSyntax
+#endif
+#if canImport(SwiftSyntaxParser)
+import SwiftSyntaxParser
+#endif
 
 /// Represents one file in the source code input
 public struct File {
@@ -35,7 +40,7 @@ public struct File {
             more gracefully, but I'm afraid SwiftSyntax – the Apple library used by
             Sitrep – is rather flaky in this way.
 
-            For reference, Sitrep is currently designed to work with Swift 5.4 and 5.5.
+            For reference, Sitrep is currently designed to work with Swift 5.4, 5.5, 5.6
             """)
         }
     }

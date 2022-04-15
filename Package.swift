@@ -3,12 +3,19 @@
 
 import PackageDescription
 
+var dependencies: [Target.Dependency] = [
+    "SwiftSyntax", "Yams", .product(name: "ArgumentParser", package: "swift-argument-parser")
+]
+
 // IMPORTANT: IF YOU CHANGE THE BELOW, PLEASE ALSO CHANGE THE LARGE FATALERROR()
 // MESSAGE IN FILE.SWIFT TO MATCH THE NEW SWIFT VERSION.
-#if swift(<5.5)
-let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50400.0")
+#if swift(>=5.6)
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50600.1")
+dependencies.append(.product(name: "SwiftSyntaxParser", package: "SwiftSyntax"))
 #elseif swift(>=5.5)
-let swiftSyntaxVersion = Package.Dependency.Requirement.exactItem("0.50500.0")
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50500.0")
+#else
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50400.0")
 #endif
 
 let package = Package(
@@ -28,10 +35,7 @@ let package = Package(
         .executableTarget(name: "Sitrep", dependencies: ["SitrepCore",
                                                .product(name: "ArgumentParser",
                                                         package: "swift-argument-parser")]),
-        .target(name: "SitrepCore", dependencies: ["SwiftSyntax",
-                                                   "Yams",
-                                                   .product(name: "ArgumentParser",
-                                                            package: "swift-argument-parser")]),
+        .target(name: "SitrepCore", dependencies: dependencies),
         .testTarget(name: "SitrepCoreTests", dependencies: ["SitrepCore"], exclude: ["Inputs"])
     ]
 )
