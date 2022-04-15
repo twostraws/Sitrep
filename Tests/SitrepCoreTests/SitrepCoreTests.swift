@@ -1,7 +1,12 @@
 @testable import SitrepCore
 import XCTest
 import class Foundation.Bundle
+#if canImport(SwiftSyntax)
 import SwiftSyntax
+#endif
+#if canImport(SwiftSyntaxParser)
+import SwiftSyntaxParser
+#endif
 
 final class SitrepCoreTests: XCTestCase {
     let testClass = "class ViewController: UIViewController { }"
