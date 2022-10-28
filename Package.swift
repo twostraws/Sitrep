@@ -10,8 +10,12 @@ var dependencies: [Target.Dependency] = [
 // IMPORTANT: IF YOU CHANGE THE BELOW, PLEASE ALSO CHANGE THE LARGE FATALERROR()
 // MESSAGE IN FILE.SWIFT TO MATCH THE NEW SWIFT VERSION.
 #if swift(>=5.6)
-let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50600.1")
 dependencies.append(.product(name: "SwiftSyntaxParser", package: "SwiftSyntax"))
+#endif
+#if swift(>=5.7)
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50700.1")
+#elseif swift(>=5.6)
+let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50600.1")
 #elseif swift(>=5.5)
 let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50500.0")
 #else
