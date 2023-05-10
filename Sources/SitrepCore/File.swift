@@ -9,12 +9,7 @@
 //
 
 import Foundation
-#if canImport(SwiftSyntax)
-import SwiftSyntax
-#endif
-#if canImport(SwiftSyntaxParser)
 import SwiftSyntaxParser
-#endif
 
 /// Represents one file in the source code input
 public struct File {
@@ -27,28 +22,16 @@ public struct File {
     /// Creates an instance of the scanner from a file, then starts it walking through code
     init(url: URL) throws {
         self.url = url
-        results = FileVisitor()
+        results = FileVisitor(viewMode: .fixedUp)
 
-        do {
-            let sourceFile = try SyntaxParser.parse(url)
-            results.walk(sourceFile)
-        } catch ParserError.parserCompatibilityCheckFailed {
-            fatalError("""
-            Swift has reported a version incompatibility that's causing problems.
-            This usually means Sitrep was built using a different version of Swift
-            than the one currently enabled on your system. I wish this was handled
-            more gracefully, but I'm afraid SwiftSyntax – the Apple library used by
-            Sitrep – is rather flaky in this way.
-
-            For reference, Sitrep is currently designed to work with Swift 5.4, 5.5, 5.6
-            """)
-        }
+        let sourceFile = try SyntaxParser.parse(url)
+        results.walk(sourceFile)
     }
 
     /// Creates an instance of the scanner from a string, then starts it walking through code
     init(sourceCode: String) throws {
         self.url = nil
-        results = FileVisitor()
+        results = FileVisitor(viewMode: .fixedUp)
 
         let sourceFile = try SyntaxParser.parse(source: sourceCode)
         results.walk(sourceFile)

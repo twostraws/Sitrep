@@ -14,10 +14,10 @@ import SwiftSyntax
 /// Scans source code to remove comments and most whitespace.
 class BodyStripper: SyntaxRewriter {
     /// This class only scans tokens, and this method strips content from both leading and trailing trivia.
-    override func visit(_ token: TokenSyntax) -> Syntax {
+    override func visit(_ token: TokenSyntax) -> TokenSyntax {
         let leading = clean(trivia: token.leadingTrivia)
         let trailing = clean(trivia: token.trailingTrivia)
-        return Syntax(token.withLeadingTrivia(leading).withTrailingTrivia(trailing))
+        return TokenSyntax(token.withLeadingTrivia(leading).withTrailingTrivia(trailing)) ?? token
     }
 
     /// This removes all comments plus tab and spaces, and also collapses line breaks

@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Swift-5.4-red.svg" />
+    <img src="https://img.shields.io/badge/Swift-5.8-red.svg" />
     <a href="https://twitter.com/twostraws">
         <img src="https://img.shields.io/badge/Contact-@twostraws-blueviolet.svg?style=flat" alt="Twitter: @twostraws" />
     </a>
@@ -21,7 +21,7 @@ Behind the scenes, Sitrep captures a lot more information that could be utilized
 
 Sitrep is built using Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax), which means it parses Swift code accurately and efficiently. 
 
-**Note:** Please make sure that the SwiftSyntax version specified in Package.swift matches your current Swift tools version. For example, if you're using Swift tools 5.3 you need to change the spec from `0.50400.0` to `0.50300.0`.
+**Note:** Please make sure that the SwiftSyntax version specified in Package.swift matches your current Swift tools version.
 
 
 ## Installation
@@ -104,7 +104,7 @@ Alternatively, you can use the `-i` parameter to have Sitrep tell you the config
 
 ## Try it yourself
 
-Sitrep is written using Swift 5.3. You can either build and run the executable directly, or integrate the SitrepCore library into your own code.
+Sitrep is written using Swift 5.8. You can either build and run the executable directly, or integrate the SitrepCore library into your own code.
 
 To build Sitrep, clone this repository and open Terminal in the repository root directory. Then run:
 
@@ -133,7 +133,7 @@ Please ensure you write tests to accompany any code you contribute, and that Swi
 
 ## Credits
 
-Sitrep was designed and built by Paul Hudson, and is copyright © Paul Hudson 2021. Sitrep is licensed under the Apache License v2.0 with Runtime Library Exception; for the full license please see the LICENSE file.
+Sitrep was designed and built by Paul Hudson, and is copyright © Paul Hudson 2023. Sitrep is licensed under the Apache License v2.0 with Runtime Library Exception; for the full license please see the LICENSE file.
 
 Sitrep is built on top of Apple’s [SwiftSyntax](https://github.com/apple/swift-syntax) library for parsing code, which is also available under the Apache License v2.0 with Runtime Library Exception.
 

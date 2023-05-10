@@ -1,35 +1,24 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 var dependencies: [Target.Dependency] = [
-    "SwiftSyntax", "Yams", .product(name: "ArgumentParser", package: "swift-argument-parser")
+    .product(name: "SwiftSyntax", package: "swift-syntax"), .product(name: "SwiftSyntaxParser", package: "swift-syntax"), "Yams", .product(name: "ArgumentParser", package: "swift-argument-parser")
 ]
-
-// IMPORTANT: IF YOU CHANGE THE BELOW, PLEASE ALSO CHANGE THE LARGE FATALERROR()
-// MESSAGE IN FILE.SWIFT TO MATCH THE NEW SWIFT VERSION.
-#if swift(>=5.6)
-let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50600.1")
-dependencies.append(.product(name: "SwiftSyntaxParser", package: "SwiftSyntax"))
-#elseif swift(>=5.5)
-let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50500.0")
-#else
-let swiftSyntaxVersion = Package.Dependency.Requirement.exact("0.50400.0")
-#endif
 
 let package = Package(
     name: "Sitrep",
     platforms: [
-        .macOS(.v10_12)
+        .macOS(.v10_15)
     ],
     products: [
         .library(name: "SitrepCore", targets: ["SitrepCore"])
     ],
     dependencies: [
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", swiftSyntaxVersion),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.4")
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "508.0.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
     ],
     targets: [
         .executableTarget(name: "Sitrep", dependencies: ["SitrepCore",
