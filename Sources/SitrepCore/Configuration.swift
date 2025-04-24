@@ -2,7 +2,7 @@ import Foundation
 import Yams
 
 /// Holds the complete set of configured values and defaults.
-public struct Configuration: Codable, Sendable {
+public struct Configuration: Codable {
     private let excluded: [String]
 
     public static let `default`: Configuration = .init(
