@@ -4,7 +4,10 @@
 import PackageDescription
 
 var dependencies: [Target.Dependency] = [
-    .product(name: "SwiftSyntax", package: "swift-syntax"), .product(name: "SwiftSyntaxParser", package: "swift-syntax"), "Yams", .product(name: "ArgumentParser", package: "swift-argument-parser")
+    .product(name: "SwiftSyntax", package: "swift-syntax"),
+    .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+    "Yams",
+    .product(name: "ArgumentParser", package: "swift-argument-parser")
 ]
 
 let package = Package(
@@ -13,7 +16,8 @@ let package = Package(
         .macOS(.v10_15)
     ],
     products: [
-        .library(name: "SitrepCore", targets: ["SitrepCore"])
+        .library(name: "SitrepCore", targets: ["SitrepCore"]),
+        .executable(name: "Sitrep", targets: ["Sitrep"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "508.0.0"),
@@ -21,9 +25,13 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
     ],
     targets: [
-        .executableTarget(name: "Sitrep", dependencies: ["SitrepCore",
-                                               .product(name: "ArgumentParser",
-                                                        package: "swift-argument-parser")]),
+        .executableTarget(
+            name: "Sitrep",
+            dependencies: [
+                "SitrepCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]
+        ),
         .target(name: "SitrepCore", dependencies: dependencies),
         .testTarget(name: "SitrepCoreTests", dependencies: ["SitrepCore"], exclude: ["Inputs"])
     ]

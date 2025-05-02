@@ -1,5 +1,5 @@
 //
-//  Command.swift
+//  Sitrep.swift
 //  ArgumentParser
 //
 //  Created by Yume on 2020/3/10.
@@ -9,7 +9,8 @@ import ArgumentParser
 import Foundation
 import SitrepCore
 
-struct Command: ParsableCommand {
+@main
+struct Sitrep: ParsableCommand {
     @Option(name: [.short, .customLong("config")], help: "The path of `.sitrep.yml`.")
     var configurationPath: String?
 
