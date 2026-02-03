@@ -59,7 +59,7 @@ class FileVisitor: SyntaxVisitor {
 
     /// Triggered on exiting a single enum case
     override func visitPost(_ node: EnumCaseElementSyntax) {
-        current?.cases.append(node.identifier.text)
+        current?.cases.append(node.name.text)
     }
 
     /// Triggered on entering an extension
@@ -80,32 +80,30 @@ class FileVisitor: SyntaxVisitor {
         var returnType = ""
 
         // Examine this function's modifiers to figure out whether it's static
-        if let modifiers = node.modifiers {
-            for modifier in modifiers {
-                let modifierText = modifier.withoutTrivia().name.text
+        for modifier in node.modifiers {
+            let modifierText = modifier.name.text
 
-                if modifierText == "static" || modifierText == "class" {
-                    isStatic = true
-                }
+            if modifierText == "static" || modifierText == "class" {
+                isStatic = true
             }
         }
 
         // Copy in the throwing status
-        if let throwsKeyword = node.signature.throwsOrRethrowsKeyword {
-            if let throwsOrRethrows = Function.ThrowingStatus(rawValue: throwsKeyword.text) {
+        if let throwsSpecifier = node.signature.effectSpecifiers?.throwsClause?.throwsSpecifier {
+            if let throwsOrRethrows = Function.ThrowingStatus(rawValue: throwsSpecifier.text) {
                 throwingStatus = throwsOrRethrows
             }
         } else {
             throwingStatus = .none
         }
 
-        let name = node.identifier.text
+        let name = node.name.text
 
         // Flatten the list of parameters for easier storage
-        let parameters = node.signature.input.parameterList.compactMap { $0.firstName?.text }
+        let parameters = node.signature.parameterClause.parameters.map { $0.firstName.text }
 
         // If we have a return type, copy it here
-        if let nodeReturnType = node.signature.output?.returnType {
+        if let nodeReturnType = node.signature.returnClause?.type {
             returnType = "\(nodeReturnType)"
         }
 
@@ -200,11 +198,11 @@ class FileVisitor: SyntaxVisitor {
         // Just use an empty string in place of the commented out code above.
         let nodeBodyStripped = ""
 
-        let inheritanceClause = node.inheritanceClause?.inheritedTypeCollection.map {
-            "\($0.typeName)".trimmingCharacters(in: .whitespacesAndNewlines)
+        let inheritanceClause = node.inheritanceClause?.inheritedTypes.map {
+            "\($0.type)".trimmingCharacters(in: .whitespacesAndNewlines)
         } ?? []
 
-        let name = node.name
+        let name = node.commonName
             .trimmingCharacters(in: .whitespaces)
 
         let newObject = Type(type: type, name: name, inheritance: inheritanceClause, comments: comments(for: node._syntaxNode), body: nodeBody, strippedBody: nodeBodyStripped)
@@ -217,45 +215,37 @@ class FileVisitor: SyntaxVisitor {
     /// Reads all leading trivia for a node, discards everything that isn't a comment, then
     /// sends back an array of what's left.
     func comments(for node: Syntax) -> [Comment] {
-        var comments = [Comment]()
-
-        if let extractedComments = node.leadingTrivia?.compactMap(extractComments) {
-            comments = extractedComments
-        }
-
-        return comments
+        return node.leadingTrivia.compactMap(extractComments)
     }
 }
 
 /// The handful of common things we use across types
 protocol CommonSyntax: SyntaxProtocol {
-    var inheritanceClause: SwiftSyntax.TypeInheritanceClauseSyntax? { get set }
-    var name: String { get }
-    var leadingTrivia: SwiftSyntax.Trivia? { get set }
-    func withoutTrivia() -> Self
+    var inheritanceClause: SwiftSyntax.InheritanceClauseSyntax? { get set }
+    var commonName: String { get }
 }
 
-/// Returns the class's identifier text as its name
+/// Returns the class's name text as its commonName
 extension ClassDeclSyntax: CommonSyntax {
-    var name: String { identifier.text }
+    var commonName: String { name.text }
 }
 
-/// Returns the enum's identifier text as its name
+/// Returns the enum's name text as its commonName
 extension EnumDeclSyntax: CommonSyntax {
-    var name: String { identifier.text }
+    var commonName: String { name.text }
 }
 
-/// Returns the struct's identifier text as its name
+/// Returns the struct's name text as its commonName
 extension StructDeclSyntax: CommonSyntax {
-    var name: String { identifier.text }
+    var commonName: String { name.text }
 }
 
-/// Returns the protocol's identifier text as its name
+/// Returns the protocol's name text as its commonName
 extension ProtocolDeclSyntax: CommonSyntax {
-    var name: String { identifier.text }
+    var commonName: String { name.text }
 }
 
-/// Returns the extension's identifier text as its name
+/// Returns the extension's extended type as its commonName
 extension ExtensionDeclSyntax: CommonSyntax {
-    var name: String { "\(extendedType)" }
+    var commonName: String { "\(extendedType)" }
 }

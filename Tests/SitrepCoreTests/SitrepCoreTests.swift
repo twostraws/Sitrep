@@ -1,11 +1,14 @@
-@testable import SitrepCore
 import XCTest
+
 import class Foundation.Bundle
+
+@testable import SitrepCore
+
 #if canImport(SwiftSyntax)
 import SwiftSyntax
 #endif
-#if canImport(SwiftSyntaxParser)
-import SwiftSyntaxParser
+#if canImport(SwiftParser)
+import SwiftParser
 #endif
 
 final class SitrepCoreTests: XCTestCase {
@@ -29,7 +32,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testClassDetection() throws {
-        let file = try File(sourceCode: testClass)
+        let file = File(sourceCode: testClass)
 
         XCTAssertEqual(file.results.rootNode.types.count, 1)
 
@@ -44,7 +47,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testStructDetection() throws {
-        let file = try File(sourceCode: testStruct)
+        let file = File(sourceCode: testStruct)
 
         XCTAssertEqual(file.results.rootNode.types.count, 1)
 
@@ -59,7 +62,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testEnumDetection() throws {
-        let file = try File(sourceCode: testEnum)
+        let file = File(sourceCode: testEnum)
 
         XCTAssertEqual(file.results.rootNode.types.count, 1)
 
@@ -76,7 +79,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testProtocolDetection() throws {
-        let file = try File(sourceCode: testProtocol)
+        let file = File(sourceCode: testProtocol)
 
         XCTAssertEqual(file.results.rootNode.types.count, 1)
 
@@ -91,7 +94,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testExtensionDetection() throws {
-        let file = try File(sourceCode: testExtension)
+        let file = File(sourceCode: testExtension)
 
         XCTAssertEqual(file.results.rootNode.types.count, 1)
 
@@ -106,7 +109,7 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testImportDetection() throws {
-        let file = try File(sourceCode: testImports)
+        let file = File(sourceCode: testImports)
         XCTAssertEqual(file.results.imports.count, 3)
     }
 
@@ -206,7 +209,8 @@ final class SitrepCoreTests: XCTestCase {
     }
 
     func testBodyStripperRemovedComments() throws {
-        let parsedBody = try SyntaxParser.parse(getInput("spacing.swift"))
+        let source = try String(contentsOf: getInput("spacing.swift"), encoding: .utf8)
+        let parsedBody = Parser.parse(source: source)
         let strippedBody = BodyStripper().visit(parsedBody)
         let sourceLines = "\(strippedBody)".removingDuplicateLineBreaks()
         XCTAssertEqual(sourceLines.lines.count, 7)
@@ -235,7 +239,10 @@ final class SitrepCoreTests: XCTestCase {
         let config = Configuration(excluded: ["IgnoredDirectory"])
         let (_, files, _) = app.run(reportType: .json, configuration: config)
 
-        XCTAssertEqual(files.count, 9, "There should be 9 files in all test inputs, because IgnoredDirectory should be excluded.")
+        XCTAssertEqual(
+            files.count, 9,
+            "There should be 9 files in all test inputs, because IgnoredDirectory should be excluded."
+        )
     }
 
     static var allTests = [
@@ -260,6 +267,6 @@ final class SitrepCoreTests: XCTestCase {
         ("testBodyStripperRemovedComments", testBodyStripperRemovedComments),
         ("testCreatingReport", testCreatingReport),
         ("testLongestType", testLongestType),
-        ("testIgnoredFiles", testIgnoredFiles)
+        ("testIgnoredFiles", testIgnoredFiles),
     ]
 }
