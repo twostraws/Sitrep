@@ -9,7 +9,7 @@
 //
 
 import Foundation
-import SwiftSyntaxParser
+import SwiftParser
 
 /// Represents one file in the source code input
 public struct File {
@@ -24,16 +24,17 @@ public struct File {
         self.url = url
         results = FileVisitor(viewMode: .fixedUp)
 
-        let sourceFile = try SyntaxParser.parse(url)
+        let sourceContents = try String(contentsOf: url, encoding: .utf8)
+        let sourceFile = Parser.parse(source: sourceContents)
         results.walk(sourceFile)
     }
 
     /// Creates an instance of the scanner from a string, then starts it walking through code
-    init(sourceCode: String) throws {
+    init(sourceCode: String) {
         self.url = nil
         results = FileVisitor(viewMode: .fixedUp)
 
-        let sourceFile = try SyntaxParser.parse(source: sourceCode)
+        let sourceFile = Parser.parse(source: sourceCode)
         results.walk(sourceFile)
     }
 
