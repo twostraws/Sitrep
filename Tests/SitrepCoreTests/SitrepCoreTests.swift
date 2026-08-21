@@ -260,30 +260,4 @@ final class SitrepCoreTests: XCTestCase {
         XCTAssertEqual(results.swiftUILinesOfCode, 25)
     }
     
-    static var allTests = [
-        ("testClassDetection", testClassDetection),
-        ("testStructDetection", testStructDetection),
-        ("testEnumDetection", testEnumDetection),
-        ("testProtocolDetection", testProtocolDetection),
-        ("testExtensionDetection", testExtensionDetection),
-        ("testImportDetection", testImportDetection),
-        ("testLineCounting", testLineCounting),
-        ("testFileScanning", testFileScanning),
-        ("testBadFileScanning", testBadFileScanning),
-        ("testBadFileParsing", testBadFileParsing),
-        ("testFileCounts", testFileCounts),
-        ("testCollationTypeCounts", testCollationTypeCounts),
-        ("testCollationImports", testCollationImports),
-        ("testCollationImports", testCollationImports),
-        ("testSpecificInheritances", testSpecificInheritances),
-        ("testEncoding", testEncoding),
-        ("testTextReportGeneration", testTextReportGeneration),
-        ("testJSONReportGeneration", testJSONReportGeneration),
-        ("testBodyStripperRemovedComments", testBodyStripperRemovedComments),
-        ("testCreatingReport", testCreatingReport),
-        ("testLongestType", testLongestType),
-        ("testIgnoredFiles", testIgnoredFiles),
-        ("testUIKitLinesOfCode", testUIKitLinesOfCode),
-        ("testSwiftUILinesOfCode", testSwiftUILinesOfCode)
-    ]
 }

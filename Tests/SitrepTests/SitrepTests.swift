@@ -43,7 +43,4 @@ final class SitrepTests: XCTestCase {
         #endif
     }
 
-    static var allTests = [
-        //        ("testClassDetection", testClassDetection),
-    ]
 }
