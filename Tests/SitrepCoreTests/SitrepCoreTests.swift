@@ -21,7 +21,7 @@ final class SitrepCoreTests: XCTestCase {
     let badURL = URL(fileURLWithPath: "/Sitrep_ThisWillNeverWorkNuhUh")
 
     var inputs: URL {
-        var result = URL(fileURLWithPath: #file)
+        var result = URL(fileURLWithPath: #filePath)
         result.deleteLastPathComponent()
         result.appendPathComponent("Inputs")
         return result
